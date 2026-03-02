@@ -80,7 +80,7 @@ def test_health() -> None:
     response = client.get("/api/health")
     assert response.status_code == 200
     assert response.json()["status"] == "ok"
-    assert response.json()["version"] == "0.3.1"
+    assert response.json()["version"] == "0.4.0"
 
 
 def test_get_voices_with_filters(monkeypatch) -> None:

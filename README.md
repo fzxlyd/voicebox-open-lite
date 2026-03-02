@@ -18,6 +18,7 @@ This project gives you a deployable baseline with:
 - Batch progress indicator and pass-rate meter
 - Realtime waveform visualizer in output player
 - Runtime stats panel
+- Desktop packaging pipeline for macOS and Windows
 - Docker support
 - GitHub Actions CI
 
@@ -123,16 +124,33 @@ Or deploy with Render Blueprint:
 render blueprint launch
 ```
 
+## Desktop Downloads
+
+Desktop binaries are published as release assets:
+
+- `VoxaStudio-macOS.zip`
+- `VoxaStudio-windows.zip`
+
+When a GitHub release is published, `.github/workflows/desktop-release.yml` builds both targets and uploads the assets automatically.
+
+Run desktop build locally:
+
+```bash
+pip install -r requirements-desktop.txt pyinstaller
+python desktop/build.py
+```
+
 ## Project Layout
 
 ```text
 .
 ├── app/
+├── desktop/
 ├── output/playwright/
 ├── render.yaml
 ├── web/
 ├── tests/
-└── .github/workflows/ci.yml
+└── .github/workflows/
 ```
 
 ## Safety Notes

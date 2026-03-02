@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 from time import perf_counter
@@ -24,9 +25,9 @@ from app.schemas import (
 from app.tts_engine import DEFAULT_VOICE, list_available_voices, parse_locale_from_voice, synthesize_speech
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-WEB_DIR = BASE_DIR / "web"
-OUTPUT_DIR = BASE_DIR / "outputs"
-HISTORY_FILE = OUTPUT_DIR / "history.json"
+WEB_DIR = Path(os.getenv("VOXA_WEB_DIR", str(BASE_DIR / "web"))).expanduser().resolve()
+OUTPUT_DIR = Path(os.getenv("VOXA_OUTPUT_DIR", str(BASE_DIR / "outputs"))).expanduser().resolve()
+HISTORY_FILE = Path(os.getenv("VOXA_HISTORY_FILE", str(OUTPUT_DIR / "history.json"))).expanduser().resolve()
 INDEX_FILE = WEB_DIR / "index.html"
 
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -74,7 +75,7 @@ PRESETS: list[PresetItem] = [
 app = FastAPI(
     title="Voxa Studio",
     description="Open-source text-to-speech studio inspired by voicebox.",
-    version="0.3.1",
+    version="0.4.0",
 )
 
 app.add_middleware(

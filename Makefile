@@ -1,4 +1,4 @@
-.PHONY: install run test
+.PHONY: install run test desktop-build
 
 install:
 	python3 -m pip install --upgrade pip
@@ -9,3 +9,7 @@ run:
 
 test:
 	pytest -q
+
+desktop-build:
+	pip install -r requirements-desktop.txt pyinstaller
+	python desktop/build.py

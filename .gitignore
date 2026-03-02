@@ -8,3 +8,6 @@ venv/
 .DS_Store
 outputs/
 .playwright-cli/
+build/
+dist/
+*.spec
