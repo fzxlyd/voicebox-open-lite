@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: voicebox-open-lite
+    name: voxa-studio
     env: python
     plan: free
     buildCommand: pip install -r requirements.txt

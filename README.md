@@ -1,4 +1,4 @@
-# Voicebox Open Lite
+# Voxa Studio
 
 Open-source text-to-speech starter inspired by [jamiepine/voicebox](https://github.com/jamiepine/voicebox).
 
@@ -20,7 +20,7 @@ This project gives you a deployable baseline with:
 
 ## UI Preview
 
-![Voicebox Open Lite demo](output/playwright/demo.png)
+![Voxa Studio demo](output/playwright/demo.png)
 
 ## Demo Features
 
@@ -56,7 +56,7 @@ Open: `http://127.0.0.1:8000`
 curl -X POST http://127.0.0.1:8000/api/speak \
   -H "Content-Type: application/json" \
   -d '{
-    "text": "Hello from Voicebox Open Lite",
+    "text": "Hello from Voxa Studio",
     "voice": "en-US-AriaNeural",
     "rate": 0,
     "pitch": 0,
@@ -77,7 +77,7 @@ Response:
   "audio_url": "/audio/<id>.mp3",
   "created_at": "2026-03-02T07:00:00Z",
   "characters": 29,
-  "text_preview": "Hello from Voicebox Open Lite"
+  "text_preview": "Hello from Voxa Studio"
 }
 ```
 
@@ -90,8 +90,8 @@ pytest -q
 ## Docker
 
 ```bash
-docker build -t voicebox-open-lite .
-docker run --rm -p 8000:8000 voicebox-open-lite
+docker build -t voxa-studio .
+docker run --rm -p 8000:8000 voxa-studio
 ```
 
 ## Deploy

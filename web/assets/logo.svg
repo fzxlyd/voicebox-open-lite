@@ -1,20 +1,15 @@
-<svg width="320" height="92" viewBox="0 0 320 92" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Voicebox Open Lite">
+<svg width="332" height="92" viewBox="0 0 332 92" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Voxa Studio">
   <defs>
-    <linearGradient id="vb-glow" x1="8" y1="6" x2="84" y2="84" gradientUnits="userSpaceOnUse">
+    <linearGradient id="vb-mark" x1="6" y1="6" x2="84" y2="84" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#3EECC4"/>
       <stop offset="1" stop-color="#37A0FF"/>
     </linearGradient>
   </defs>
-  <rect x="4" y="4" width="84" height="84" rx="24" fill="#0D1120"/>
-  <rect x="4" y="4" width="84" height="84" rx="24" stroke="url(#vb-glow)" stroke-width="2"/>
-  <path d="M26 58V34M37 66V26M48 60V32M59 68V24M70 55V37" stroke="url(#vb-glow)" stroke-width="5" stroke-linecap="round"/>
-  <path d="M112 57.5V34.8H120.9C126.7 34.8 130.4 38.3 130.4 43.6C130.4 49 126.7 52.5 120.9 52.5H116.7V57.5H112ZM116.7 48.7H120.5C123.3 48.7 125 46.9 125 43.6C125 40.4 123.3 38.6 120.5 38.6H116.7V48.7Z" fill="#E8F0FF"/>
-  <path d="M144.3 58.1C138.2 58.1 134 53.7 134 47.4C134 41.2 138.2 36.8 144.3 36.8C150.4 36.8 154.5 41.2 154.5 47.4C154.5 53.7 150.4 58.1 144.3 58.1ZM144.3 54.2C147.6 54.2 150 51.5 150 47.4C150 43.4 147.6 40.6 144.3 40.6C141 40.6 138.6 43.4 138.6 47.4C138.6 51.5 141 54.2 144.3 54.2Z" fill="#E8F0FF"/>
-  <path d="M158.6 57.5V37.3H163.2V41C164.6 38.4 167.1 36.9 170.4 36.9C175.8 36.9 179.1 40.5 179.1 46.4V57.5H174.4V47.2C174.4 43 172.5 40.8 168.8 40.8C165.1 40.8 163.2 43.2 163.2 47.5V57.5H158.6Z" fill="#E8F0FF"/>
-  <path d="M183.2 57.5V29.5H187.9V57.5H183.2Z" fill="#E8F0FF"/>
-  <path d="M191.8 52.1L196.3 51.3C197 53.4 198.8 54.5 201.5 54.5C204 54.5 205.4 53.5 205.4 51.8C205.4 50.3 204.4 49.5 201.5 48.9L199.2 48.4C194.7 47.4 192.6 45.4 192.6 42C192.6 38.8 195.5 36.8 200.1 36.8C204.8 36.8 207.7 38.8 208.8 42.5L204.4 43.4C203.8 41.6 202.4 40.5 200.1 40.5C197.9 40.5 196.7 41.4 196.7 42.8C196.7 44.2 197.7 45.1 200.4 45.7L202.7 46.2C207.4 47.2 209.5 49.2 209.5 52.5C209.5 56 206.3 58.1 201.4 58.1C196.6 58.1 193.2 56 191.8 52.1Z" fill="#E8F0FF"/>
-  <path d="M214.7 57.5V29.5H219.4V57.5H214.7Z" fill="#E8F0FF"/>
-  <path d="M233.4 58.1C227.4 58.1 223.2 53.7 223.2 47.4C223.2 41.2 227.4 36.8 233.4 36.8C239.5 36.8 243.6 41.2 243.6 47.4C243.6 53.7 239.5 58.1 233.4 58.1ZM233.4 54.2C236.8 54.2 239.1 51.5 239.1 47.4C239.1 43.4 236.8 40.6 233.4 40.6C230.1 40.6 227.8 43.4 227.8 47.4C227.8 51.5 230.1 54.2 233.4 54.2Z" fill="#E8F0FF"/>
-  <path d="M247.8 57.5V37.3H252.4V41C253.8 38.4 256.4 36.9 259.7 36.9C265 36.9 268.3 40.5 268.3 46.4V57.5H263.7V47.2C263.7 43 261.7 40.8 258 40.8C254.3 40.8 252.4 43.2 252.4 47.5V57.5H247.8Z" fill="#E8F0FF"/>
-  <path d="M272.3 57.5V37.3H276.9V40.4C278.2 38.1 280.3 36.9 283.3 36.9C286.5 36.9 288.8 38.2 290 40.8C291.3 38.2 293.7 36.9 297.1 36.9C301.8 36.9 304.6 39.9 304.6 45.2V57.5H300V46.1C300 42.5 298.6 40.8 295.9 40.8C293.2 40.8 291.5 42.8 291.5 46.3V57.5H286.9V46.1C286.9 42.5 285.5 40.8 282.8 40.8C280.1 40.8 278.4 42.8 278.4 46.3V57.5H272.3Z" fill="#E8F0FF"/>
+
+  <rect x="5" y="5" width="82" height="82" rx="22" fill="#0B1021"/>
+  <rect x="5" y="5" width="82" height="82" rx="22" stroke="url(#vb-mark)" stroke-width="2"/>
+  <path d="M24 58V34M35 66V26M46 60V32M57 68V24M68 55V37" stroke="url(#vb-mark)" stroke-width="5" stroke-linecap="round"/>
+
+  <text x="104" y="47" fill="#EEF5FF" font-size="33" font-family="'Sora', 'IBM Plex Sans', sans-serif" font-weight="700" letter-spacing="0.4">Voxa</text>
+  <text x="104" y="74" fill="#A6BADF" font-size="20" font-family="'IBM Plex Sans', sans-serif" font-weight="600" letter-spacing="1.6">STUDIO</text>
 </svg>
