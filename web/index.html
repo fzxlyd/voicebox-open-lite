@@ -148,6 +148,13 @@
           <div id="result" class="result empty">
             <p id="result-meta">Generate audio to preview here.</p>
             <audio id="audio-player" controls></audio>
+            <div class="wavebox">
+              <div class="wave-head">
+                <span>Waveform</span>
+                <span id="wave-state" class="wave-state">Idle</span>
+              </div>
+              <canvas id="waveform" class="wave-canvas" width="900" height="120" aria-label="Audio waveform preview"></canvas>
+            </div>
             <div class="output-actions">
               <a id="download" download="voxa-output.mp3" href="#">Download MP3</a>
               <button id="copy-link" type="button" class="link-btn">Copy Link</button>

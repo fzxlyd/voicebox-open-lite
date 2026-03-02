@@ -16,6 +16,7 @@ This project gives you a deployable baseline with:
 - Persistent render history (replay / copy link / delete / clear-all)
 - Batch report panel (success/failure per line)
 - Batch progress indicator and pass-rate meter
+- Realtime waveform visualizer in output player
 - Runtime stats panel
 - Docker support
 - GitHub Actions CI

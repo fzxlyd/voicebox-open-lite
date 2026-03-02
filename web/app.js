@@ -37,6 +37,8 @@ const resultMeta = document.getElementById("result-meta");
 const audioPlayer = document.getElementById("audio-player");
 const downloadLink = document.getElementById("download");
 const copyLinkButton = document.getElementById("copy-link");
+const waveformCanvas = document.getElementById("waveform");
+const waveState = document.getElementById("wave-state");
 
 const batchProgress = document.getElementById("batch-progress");
 const batchProgressLabel = document.getElementById("batch-progress-label");
@@ -54,6 +56,15 @@ const state = {
   loadedVoices: [],
   currentAudioUrl: "",
   progressTimer: null,
+  wave: {
+    context: null,
+    analyser: null,
+    source: null,
+    data: null,
+    canvasCtx: null,
+    raf: null,
+    ready: false,
+  },
 };
 
 const setStatus = (message, tone = "neutral") => {
@@ -92,6 +103,159 @@ const formatRelative = (isoTime) => {
     return `${Math.round(delta / 3600)}h ago`;
   }
   return `${Math.round(delta / 86400)}d ago`;
+};
+
+const setWaveState = (label, tone = "") => {
+  waveState.textContent = label;
+  waveState.classList.remove("live", "paused", "error");
+  if (tone) {
+    waveState.classList.add(tone);
+  }
+};
+
+const syncWaveCanvas = () => {
+  if (!waveformCanvas) {
+    return { width: 0, height: 0, dpr: 1 };
+  }
+
+  const dpr = window.devicePixelRatio || 1;
+  const rect = waveformCanvas.getBoundingClientRect();
+  const width = Math.max(1, Math.floor(rect.width * dpr));
+  const height = Math.max(1, Math.floor(rect.height * dpr));
+
+  if (waveformCanvas.width !== width || waveformCanvas.height !== height) {
+    waveformCanvas.width = width;
+    waveformCanvas.height = height;
+  }
+
+  return { width, height, dpr };
+};
+
+const clearWaveform = (label = "Idle") => {
+  if (!waveformCanvas) {
+    return;
+  }
+  const wave = state.wave;
+  const { width, height, dpr } = syncWaveCanvas();
+  if (!wave.canvasCtx) {
+    wave.canvasCtx = waveformCanvas.getContext("2d");
+  }
+  if (!wave.canvasCtx) {
+    return;
+  }
+
+  const ctx = wave.canvasCtx;
+  ctx.clearRect(0, 0, width, height);
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, width, height);
+
+  const baseline = Math.floor(height * 0.55);
+  ctx.strokeStyle = "rgba(39, 98, 214, 0.26)";
+  ctx.lineWidth = Math.max(1, dpr);
+  ctx.beginPath();
+  ctx.moveTo(0, baseline);
+  ctx.lineTo(width, baseline);
+  ctx.stroke();
+
+  setWaveState(label);
+};
+
+const ensureWavePipeline = async () => {
+  const wave = state.wave;
+  if (!waveformCanvas || !audioPlayer) {
+    return false;
+  }
+
+  if (wave.ready) {
+    return true;
+  }
+
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  if (!AudioCtx) {
+    setWaveState("Unsupported", "error");
+    return false;
+  }
+
+  try {
+    wave.context = new AudioCtx();
+    wave.analyser = wave.context.createAnalyser();
+    wave.analyser.fftSize = 256;
+    wave.analyser.smoothingTimeConstant = 0.82;
+    wave.data = new Uint8Array(wave.analyser.frequencyBinCount);
+    wave.canvasCtx = waveformCanvas.getContext("2d");
+
+    wave.source = wave.context.createMediaElementSource(audioPlayer);
+    wave.source.connect(wave.analyser);
+    wave.analyser.connect(wave.context.destination);
+    wave.ready = true;
+    return true;
+  } catch {
+    setWaveState("Unavailable", "error");
+    return false;
+  }
+};
+
+const stopWaveform = (label = "Paused", tone = "paused") => {
+  const wave = state.wave;
+  if (wave.raf) {
+    cancelAnimationFrame(wave.raf);
+    wave.raf = null;
+  }
+  setWaveState(label, tone);
+};
+
+const drawWaveform = () => {
+  const wave = state.wave;
+  if (!wave.analyser || !wave.canvasCtx || !wave.data) {
+    return;
+  }
+
+  const { width, height } = syncWaveCanvas();
+  const ctx = wave.canvasCtx;
+
+  wave.analyser.getByteFrequencyData(wave.data);
+
+  ctx.clearRect(0, 0, width, height);
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, width, height);
+
+  const bars = 54;
+  const gap = Math.max(1, Math.floor(width / 360));
+  const barWidth = Math.max(2, Math.floor((width - gap * (bars - 1)) / bars));
+  const usableHeight = height - 12;
+  const step = Math.max(1, Math.floor(wave.data.length / bars));
+
+  for (let i = 0; i < bars; i += 1) {
+    const sample = wave.data[i * step] || 0;
+    const magnitude = sample / 255;
+    const barHeight = Math.max(3, Math.floor(magnitude * usableHeight));
+    const x = i * (barWidth + gap);
+    const y = Math.floor((height - barHeight) / 2);
+
+    ctx.fillStyle = i % 2 === 0 ? "rgba(218, 93, 27, 0.85)" : "rgba(39, 98, 214, 0.85)";
+    ctx.fillRect(x, y, barWidth, barHeight);
+  }
+
+  wave.raf = requestAnimationFrame(drawWaveform);
+};
+
+const startWaveform = async () => {
+  const wave = state.wave;
+  const ready = await ensureWavePipeline();
+  if (!ready || !wave.context) {
+    return;
+  }
+
+  if (wave.context.state === "suspended") {
+    await wave.context.resume();
+  }
+
+  if (wave.raf) {
+    cancelAnimationFrame(wave.raf);
+  }
+
+  setWaveState("Live", "live");
+  drawWaveform();
 };
 
 const updateSingleMetrics = () => {
@@ -275,6 +439,7 @@ const setCurrentOutput = (item, message = "") => {
   audioPlayer.src = item.audio_url;
   downloadLink.href = item.audio_url;
   state.currentAudioUrl = new URL(item.audio_url, window.location.origin).href;
+  clearWaveform("Ready");
 
   if (message) {
     setStatus(message, "ok");
@@ -742,6 +907,14 @@ clearHistoryButton.addEventListener("click", async () => {
     }
 
     await Promise.all([loadHistory(), loadStats()]);
+    resultPanel.classList.add("empty");
+    resultMeta.textContent = "Generate audio to preview here.";
+    audioPlayer.removeAttribute("src");
+    audioPlayer.load();
+    state.currentAudioUrl = "";
+    renderBatchReport(null);
+    batchProgress.classList.add("hidden");
+    clearWaveform("Idle");
     setStatus(`Cleared ${payload.removed} history item(s).`, "ok");
   } catch (error) {
     setStatus(error.message || "Clear failed", "error");
@@ -773,6 +946,34 @@ copyCurlButton.addEventListener("click", async () => {
   }
 });
 
+audioPlayer.addEventListener("play", () => {
+  void startWaveform();
+});
+
+audioPlayer.addEventListener("pause", () => {
+  stopWaveform("Paused", "paused");
+});
+
+audioPlayer.addEventListener("ended", () => {
+  stopWaveform("Ended", "paused");
+});
+
+audioPlayer.addEventListener("emptied", () => {
+  stopWaveform("Idle");
+  clearWaveform("Idle");
+});
+
+audioPlayer.addEventListener("error", () => {
+  stopWaveform("Error", "error");
+});
+
+window.addEventListener("resize", () => {
+  if (!state.wave.ready || state.wave.raf) {
+    return;
+  }
+  clearWaveform("Ready");
+});
+
 document.addEventListener("keydown", (event) => {
   if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
     event.preventDefault();
@@ -786,6 +987,7 @@ const initialize = async () => {
   updateSingleMetrics();
   updateBatchMetrics();
   renderApiPreview();
+  clearWaveform("Idle");
 
   try {
     await Promise.all([loadPresets(), loadVoices(), loadHistory(), loadStats()]);
