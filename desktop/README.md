@@ -19,7 +19,6 @@ python desktop/build.py
 Output archives are placed in:
 
 - `dist/release/VoxaStudio-macOS-arm64.zip`
-- `dist/release/VoxaStudio-macOS-x64.zip`
 - `dist/release/VoxaStudio-windows-x64.zip`
 
 (Archive name depends on the current OS.)

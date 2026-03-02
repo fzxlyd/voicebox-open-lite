@@ -20,10 +20,6 @@ jobs:
             asset: macOS-arm64
             target_arch: arm64
             arch_label: arm64
-          - os: macos-13
-            asset: macOS-x64
-            target_arch: x86_64
-            arch_label: x64
           - os: windows-latest
             asset: windows-x64
             target_arch: ""
